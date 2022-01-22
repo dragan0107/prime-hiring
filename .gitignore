@@ -1,0 +1,7 @@
+/api/node_modules
+/client/node_modules
+
+.env
+
+.prettierrc
+.eslintrc.json
