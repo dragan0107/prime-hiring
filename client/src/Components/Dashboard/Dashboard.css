@@ -1,0 +1,52 @@
+.dash-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100vw;
+    height: 100vh;
+}
+
+.dash-inner {
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    width: 70%;
+    height: 600px;
+    background-color: #e2e0e0;
+    -webkit-box-shadow: 2px 5px 17px -5px rgba(0,0,0,0.49); 
+    box-shadow: 2px 5px 17px -5px rgba(0,0,0,0.49);
+}
+/* 
+.job-market {
+    height: 150px;
+} */
+
+.job-market-box {
+    height: 100%;
+    width: auto;
+    display: flex;
+    flex-direction: column;
+    overflow-y: auto;
+    padding: 10px;
+}
+
+::-webkit-scrollbar {
+    width: 10px;
+}
+
+/* Track */
+::-webkit-scrollbar-track {
+    background: #f1f1f1; 
+    border-radius: 20px;
+}
+
+/* Handle */
+::-webkit-scrollbar-thumb {
+    background-color: #888;
+    border-radius: 20px;
+  }
+  
+  /* Handle on hover */
+  ::-webkit-scrollbar-thumb:hover {
+    background: #555; 
+  }
