@@ -5,6 +5,7 @@ import TabContext from '@mui/lab/TabContext';
 import TabList from '@mui/lab/TabList';
 import TabPanel from '@mui/lab/TabPanel';
 import { makeStyles } from '@mui/styles';
+import AddDevModal from '../AddDevModal/AddDevModal';
 import axios from 'axios';
 
 import './Dashboard.css';
@@ -54,6 +55,7 @@ const Dashboard = () => {
                                 <Tab label="Currently Hired" value="2" />
                                 <Tab label="Item Three" value="3" />
                             </TabList>
+                            <AddDevModal id="add-dev-modal" />
                         </Box>
                         <TabPanel
                             className={classes.tabPanel}
@@ -63,7 +65,10 @@ const Dashboard = () => {
                         >
                             <div className="job-market-box">
                                 {jobMarket.map((devData) => (
-                                    <SingleDeveloper devData={devData} />
+                                    <SingleDeveloper
+                                        key={devData._id}
+                                        devData={devData}
+                                    />
                                 ))}
                             </div>
                         </TabPanel>

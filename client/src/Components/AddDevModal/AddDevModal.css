@@ -1,0 +1,14 @@
+#dev-modal-btn {
+    position: absolute;
+    top: .5em;
+    right: 1em;
+    font-weight: bold;
+}
+
+#filled-hidden-label-small {
+    padding: 15px;
+}
+
+.text-box-new-dev-form {
+    margin: 0.5em;
+}

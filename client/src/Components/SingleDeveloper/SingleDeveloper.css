@@ -82,7 +82,7 @@ p {
 .edit-delete {
     position: absolute;
     top: 1em;
-    right: 1em;
+    right: .7em;
 }
 
 .update-icons {

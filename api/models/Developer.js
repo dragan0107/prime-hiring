@@ -11,7 +11,7 @@ const DeveloperSchema = new mongoose.Schema(
             required: true,
         },
         number: {
-            type: Number,
+            type: String,
             required: true,
         },
         location: {
@@ -22,7 +22,7 @@ const DeveloperSchema = new mongoose.Schema(
             type: String,
         },
         hourlyRate: {
-            type: Number,
+            type: String,
             required: true,
         },
         technology: {
@@ -49,11 +49,9 @@ const DeveloperSchema = new mongoose.Schema(
         },
         startDate: {
             type: Date,
-            required: true,
         },
         endDate: {
             type: Date,
-            required: true,
         },
     },
     { timestamps: true }
