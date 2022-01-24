@@ -4,12 +4,13 @@
     background-color: rgb(255, 255, 255);
     margin: 10px;
     padding: 2em;
-    border-radius: 5px;
+    border-radius: 1em;
     -webkit-box-shadow: 2px 4px 16px -8px #000000; 
     box-shadow: 2px 4px 16px -8px #000000;
     display: flex;
     font-family: 'Space Mono', monospace;
     overflow: auto;
+    position: relative;
 }
 
 .single-dev-wrapper p {
@@ -29,12 +30,12 @@
     flex: 6;
 
 }
-
+/* 
 .info-right-wrapper {
     display: flex;
     flex-direction: column;
     justify-content: space-between;
-}
+} */
 
 .dev-pfp {
     height: 80px;
@@ -66,8 +67,32 @@ p {
 
 #dev-desc {
     align-items: flex-start;
+    margin-top: 2em;
 }
 
 .dev-name {
     font-size: 1.8em;
+}
+
+.linkedin-link {
+    text-decoration: none;
+
+}
+
+.edit-delete {
+    position: absolute;
+    top: 1em;
+    right: 1em;
+}
+
+.update-icons {
+    cursor: pointer;
+}
+
+.edit-icon:hover {
+    color: rgb(37, 41, 37);
+}
+
+.delete-icon:hover {
+    color: rgb(122, 49, 49)
 }

@@ -1,16 +1,18 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import Box from '@mui/material/Box';
 import Tab from '@mui/material/Tab';
 import TabContext from '@mui/lab/TabContext';
 import TabList from '@mui/lab/TabList';
 import TabPanel from '@mui/lab/TabPanel';
 import { makeStyles } from '@mui/styles';
+import axios from 'axios';
 
 import './Dashboard.css';
 import SingleDeveloper from '../SingleDeveloper/SingleDeveloper';
 
 const Dashboard = () => {
     const [value, setValue] = useState('1');
+    const [jobMarket, setJobMarket] = useState([]);
 
     const handleChange = (event, newValue) => {
         setValue(newValue);
@@ -24,6 +26,18 @@ const Dashboard = () => {
     });
 
     const classes = useStyles();
+
+    useEffect(() => {
+        const getDevs = async () => {
+            try {
+                const res = await axios.get('/developers');
+                setJobMarket(res.data.devs);
+            } catch (error) {
+                console.log(error);
+            }
+        };
+        getDevs();
+    }, []);
 
     return (
         <div className="dash-container">
@@ -48,15 +62,9 @@ const Dashboard = () => {
                             // className="job-market"
                         >
                             <div className="job-market-box">
-                                <SingleDeveloper />
-                                <SingleDeveloper />
-                                <SingleDeveloper />
-                                <SingleDeveloper />
-                                <SingleDeveloper />
-                                <SingleDeveloper />
-                                <SingleDeveloper />
-                                <SingleDeveloper />
-                                <SingleDeveloper />
+                                {jobMarket.map((devData) => (
+                                    <SingleDeveloper devData={devData} />
+                                ))}
                             </div>
                         </TabPanel>
                         <TabPanel value="2">Item Two</TabPanel>
