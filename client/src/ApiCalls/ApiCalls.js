@@ -28,12 +28,3 @@ export const updateDev = async (
         }
     }
 };
-
-export const deleteDev = async (devData, axios, setUpdated) => {
-    try {
-        await axios.delete(`/developers/${devData._id}`);
-        setUpdated((prevValue) => !prevValue);
-    } catch (error) {
-        console.log(error);
-    }
-};

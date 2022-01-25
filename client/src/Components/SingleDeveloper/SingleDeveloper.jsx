@@ -16,7 +16,6 @@ import Checkbox from '@mui/material/Checkbox';
 import AccessTimeIcon from '@mui/icons-material/AccessTime';
 import { Button } from '@mui/material';
 import axios from 'axios';
-import { deleteDev } from '../../ApiCalls/ApiCalls';
 
 const label = { inputProps: { 'aria-label': 'Checkbox demo' } };
 

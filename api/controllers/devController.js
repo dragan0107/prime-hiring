@@ -1,9 +1,25 @@
 const Developer = require('../models/Developer');
 
-//Get all devs
-exports.getDev = async (req, res) => {
+//Get non hired devs
+exports.getFreeDev = async (req, res) => {
     try {
-        const devs = await Developer.find({});
+        const devs = await Developer.find({}).sort('-createdAt');
+        res.status(201).json({
+            devs,
+        });
+    } catch (error) {
+        console.log(error);
+        res.status(400).json({
+            message: 'Something went wrong, please try again.',
+            error: error,
+        });
+    }
+};
+
+// Get hired devs
+exports.getHiredDev = async (req, res) => {
+    try {
+        const devs = await Developer.find({ isHired: true }).sort('-createdAt');
         res.status(201).json({
             devs,
         });
@@ -81,7 +97,7 @@ exports.hireDev = async (req, res) => {
             {
                 startDate: req.body.startDate,
                 endDate: req.body.endDate,
-                isHired: 'true',
+                isHired: true,
             },
             { new: true }
         );
@@ -97,4 +113,16 @@ exports.hireDev = async (req, res) => {
     }
 };
 
-// exports.hireDev =
+exports.deleteDev = async (req, res) => {
+    try {
+        await Developer.findByIdAndDelete(req.params.id);
+        res.status(200).json({
+            message: 'Developer deleted',
+        });
+    } catch (error) {
+        res.status(500).json({
+            message: 'Something went wrong, please try again.',
+            error,
+        });
+    }
+};
