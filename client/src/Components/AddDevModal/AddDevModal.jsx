@@ -6,6 +6,7 @@ import './AddDevModal.css';
 import { TextareaAutosize, TextField } from '@mui/material';
 import TechMenu from '../TechMenu/TechMenu';
 import axios from 'axios';
+import { updateDev } from '../../ApiCalls/ApiCalls';
 
 const style = {
     position: 'absolute',
@@ -39,17 +40,17 @@ const AddDevModal = ({
     const [errorMsg, setErrorMsg] = useState('');
 
     const [formValues, setFormValues] = useState({
-        fullName: '',
-        email: '',
-        number: '',
-        location: '',
-        profilePic: '',
-        hourlyRate: '',
-        linkedin: '',
-        desc: '',
-        yearsOfExp: '',
+        fullName: '' || editDevData.fullName,
+        email: '' || editDevData.email,
+        number: '' || editDevData.number,
+        location: '' || editDevData.location,
+        profilePic: '' || editDevData.profilePic,
+        hourlyRate: '' || editDevData.hourlyRate,
+        linkedin: '' || editDevData.linkedin,
+        desc: '' || editDevData.desc,
+        yearsOfExp: '' || editDevData.yearsOfExp,
     });
-
+    console.log(formValues);
     formValues.technology = tech;
     formValues.nativeLanguage = language;
 
@@ -67,6 +68,10 @@ const AddDevModal = ({
         const value = e.target.value;
         setFormValues({
             ...formValues,
+            [e.target.name]: value,
+        });
+        setEditDevData({
+            ...editDevData,
             [e.target.name]: value,
         });
         console.log(formValues);
@@ -91,6 +96,7 @@ const AddDevModal = ({
             }
         }
     };
+
     const clearInputs = () => {
         setFormValues({
             fullName: '',
@@ -107,7 +113,19 @@ const AddDevModal = ({
         formValues.nativeLanguage = '';
         setEditDevData({});
     };
-
+    const handleUpdate = () => {
+        updateDev(
+            language,
+            tech,
+            setErrorMsg,
+            axios,
+            formValues,
+            clearInputs,
+            setUpdated,
+            handleClose,
+            editDevData
+        );
+    };
     return (
         <div>
             <Button id="dev-modal-btn" onClick={handleOpen}>
@@ -130,7 +148,8 @@ const AddDevModal = ({
                                 placeholder="Full Name"
                                 name="fullName"
                                 value={
-                                    formValues.fullName || editDevData.fullName
+                                    (editDevData && editDevData.fullName) ||
+                                    formValues.fullName
                                 }
                                 onChange={handleChange}
                             />
@@ -142,7 +161,10 @@ const AddDevModal = ({
                                 label="Required"
                                 placeholder="E-mail"
                                 name="email"
-                                value={formValues.email}
+                                value={
+                                    (editDevData && editDevData.email) ||
+                                    formValues.email
+                                }
                                 onChange={handleChange}
                             />
                         </div>
@@ -153,7 +175,10 @@ const AddDevModal = ({
                                 label="Required"
                                 placeholder="Phone Number"
                                 name="number"
-                                value={formValues.number}
+                                value={
+                                    (editDevData && editDevData.number) ||
+                                    formValues.number
+                                }
                                 onChange={handleChange}
                             />
                         </div>
@@ -164,7 +189,10 @@ const AddDevModal = ({
                                 label="Required"
                                 placeholder="Location"
                                 name="location"
-                                value={formValues.location}
+                                value={
+                                    (editDevData && editDevData.location) ||
+                                    formValues.location
+                                }
                                 onChange={handleChange}
                             />
                         </div>
@@ -175,7 +203,10 @@ const AddDevModal = ({
                                 label="Required"
                                 placeholder="Years of Experience"
                                 name="yearsOfExp"
-                                value={formValues.yearsOfExp}
+                                value={
+                                    (editDevData && editDevData.yearsOfExp) ||
+                                    formValues.yearsOfExp
+                                }
                                 onChange={handleChange}
                             />
                         </div>
@@ -186,7 +217,10 @@ const AddDevModal = ({
                                 label="Required"
                                 placeholder="Hourly Rate"
                                 name="hourlyRate"
-                                value={formValues.hourlyRate}
+                                value={
+                                    (editDevData && editDevData.hourlyRate) ||
+                                    formValues.hourlyRate
+                                }
                                 onChange={handleChange}
                             />
                         </div>
@@ -195,7 +229,10 @@ const AddDevModal = ({
                                 id="outlined-required"
                                 placeholder="Profile picture URL"
                                 name="profilePic"
-                                value={formValues.profilePic}
+                                value={
+                                    (editDevData && editDevData.profilePic) ||
+                                    formValues.profilePic
+                                }
                                 onChange={handleChange}
                             />
                         </div>
@@ -204,7 +241,10 @@ const AddDevModal = ({
                                 id="outlined-required"
                                 placeholder="Linkedin URL"
                                 name="linkedin"
-                                value={formValues.linkedin}
+                                value={
+                                    (editDevData && editDevData.linkedin) ||
+                                    formValues.linkedin
+                                }
                                 onChange={handleChange}
                             />
                         </div>
@@ -233,13 +273,22 @@ const AddDevModal = ({
                                     fontSize: '15px',
                                 }}
                                 name="desc"
-                                value={formValues.desc}
+                                value={
+                                    (editDevData && editDevData.desc) ||
+                                    formValues.desc
+                                }
                                 onChange={handleChange}
                             />
                         </div>
-                        <Button variant="contained" type="submit">
-                            Submit
-                        </Button>
+                        {!openUpdateModal ? (
+                            <Button variant="contained" type="submit">
+                                Submit
+                            </Button>
+                        ) : (
+                            <Button variant="contained" onClick={handleUpdate}>
+                                Update
+                            </Button>
+                        )}
                         {errorMsg && <p className="error-msg">{errorMsg}</p>}
                     </form>
                     <Button

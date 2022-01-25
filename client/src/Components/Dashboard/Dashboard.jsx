@@ -21,6 +21,8 @@ const Dashboard = () => {
     const [forHiring, setForHiring] = useState([]);
     const [editDevData, setEditDevData] = useState({});
     const [openUpdateModal, setOpenUpdateModal] = useState(false);
+    const [errorMsg, setErrorMsg] = useState('');
+    const [deleted, setDeleted] = useState(false);
     //MUI Tab list changer
     const handleChange = (event, newValue) => {
         setValue(newValue);
@@ -45,12 +47,12 @@ const Dashboard = () => {
             }
         };
         getDevs();
-    }, [updated]);
+    }, [updated, deleted]);
 
     const hireDevs = () => {
         let users = [];
         let promises = [];
-        if (dates && forHiring) {
+        if (dates[0] !== null && forHiring.length > 0) {
             forHiring.forEach((devId) => {
                 promises.push(
                     axios
@@ -61,9 +63,12 @@ const Dashboard = () => {
                         .then((res) => users.push(res))
                 );
             });
+            Promise.all(promises).then(() => console.log(users));
+            setUpdated((prevValue) => !prevValue);
+            setErrorMsg('');
+        } else {
+            setErrorMsg('Select the candidate to hire and choose date!');
         }
-        Promise.all(promises).then(() => console.log(users));
-        setUpdated((prevValue) => !prevValue);
     };
 
     return (
@@ -85,7 +90,6 @@ const Dashboard = () => {
                             >
                                 <Tab label="Job Market" value="1" />
                                 <Tab label="Currently Hired" value="2" />
-                                <Tab label="Item Three" value="3" />
                             </TabList>
                             <AddDevModal
                                 id="add-dev-modal"
@@ -114,6 +118,7 @@ const Dashboard = () => {
                                                 setOpenUpdateModal={
                                                     setOpenUpdateModal
                                                 }
+                                                setDeleted={setDeleted}
                                             />
                                         )
                                 )}
@@ -133,16 +138,17 @@ const Dashboard = () => {
                                                 setOpenUpdateModal={
                                                     setOpenUpdateModal
                                                 }
+                                                setDeleted={setDeleted}
                                             />
                                         )
                                 )}
                             </div>
                         </TabPanel>
-                        <TabPanel value="3">Item Three</TabPanel>
                     </TabContext>
                 </Box>
                 {value === '1' && (
                     <div className="hiring-box">
+                        <span className="error-msg-hiring">{errorMsg}</span>
                         <div className="date-range-box">
                             <DateRange setDates={setDates} dates={dates} />
                         </div>

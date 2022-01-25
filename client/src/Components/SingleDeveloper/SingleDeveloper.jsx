@@ -16,6 +16,7 @@ import Checkbox from '@mui/material/Checkbox';
 import AccessTimeIcon from '@mui/icons-material/AccessTime';
 import { Button } from '@mui/material';
 import axios from 'axios';
+import { deleteDev } from '../../ApiCalls/ApiCalls';
 
 const label = { inputProps: { 'aria-label': 'Checkbox demo' } };
 
@@ -26,6 +27,7 @@ const SingleDeveloper = ({
     setUpdated,
     setEditDevData,
     setOpenUpdateModal,
+    setDeleted,
 }) => {
     const handleChange = () => {
         setForHiring((prevValues) => {
@@ -53,6 +55,16 @@ const SingleDeveloper = ({
     const editDev = () => {
         setEditDevData(devData);
         setOpenUpdateModal(true);
+    };
+
+    const handleDelete = async () => {
+        // deleteDev(devData, axios, setUpdated);
+        try {
+            await axios.delete(`/developers/${devData._id}`);
+            setDeleted((prevValue) => !prevValue);
+        } catch (error) {
+            console.log(error);
+        }
     };
     return (
         <div className="single-dev-wrapper">
@@ -133,6 +145,7 @@ const SingleDeveloper = ({
                 <DeleteForeverIcon
                     className="dev-icons update-icons delete-icon"
                     sx={{ color: 'red' }}
+                    onClick={handleDelete}
                 />
             </div>
             <div className="checkbox-div">
