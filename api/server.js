@@ -10,7 +10,9 @@ dotenv.config();
 app.use(express.json());
 
 mongoose
-    .connect(process.env.MONGO_URL)
+    .connect(
+        'mongodb+srv://drip016:prime_hiring_assignment_123@primehiringcluster.hvnws.mongodb.net/primeHiringDB?retryWrites=true&w=majority'
+    )
     .then(console.log('Connected to PrimeHiring DB.'))
     .catch((err) => console.log(err));
 
