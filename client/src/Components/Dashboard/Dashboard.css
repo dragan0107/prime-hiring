@@ -11,7 +11,7 @@
     justify-content: center;
     align-items: flex-start;
     width: 70%;
-    height: 600px;
+    height: 900px;
     background-color: #e2e0e0;
     -webkit-box-shadow: 2px 5px 17px -5px rgba(0,0,0,0.49); 
     box-shadow: 2px 5px 17px -5px rgba(0,0,0,0.49);
@@ -30,6 +30,7 @@
     overflow-y: auto;
     padding: 10px;
 }
+
 
 ::-webkit-scrollbar {
     width: 10px;
@@ -59,3 +60,21 @@
       right: 1em;
       background-color: yellow;
   } */
+
+
+  .hiring-box {
+      position: absolute;
+      right: 5em;
+      bottom: 1em;
+      display: flex;
+      /* width: 100%; */
+  }
+
+  .date-range-box {
+      margin-right: 1em;
+  }
+
+  .hire-btn {
+      width: 150px;
+      font-size: 1.2em !important;
+  }

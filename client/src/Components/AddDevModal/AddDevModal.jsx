@@ -16,15 +16,27 @@ const style = {
     bgcolor: 'background.paper',
     border: '2px solid #000',
     boxShadow: 24,
+    maxHeight: '100%',
+    overflow: 'auto',
     p: 4,
 };
 
-const AddDevModal = () => {
-    const [open, setOpen] = useState(false);
+const AddDevModal = ({
+    setUpdated,
+    editDevData,
+    setOpenUpdateModal,
+    openUpdateModal,
+    setEditDevData,
+}) => {
+    const [open, setOpen] = useState(openUpdateModal);
     const handleOpen = () => setOpen(true);
-    const handleClose = () => setOpen(false);
+    const handleClose = () => {
+        setOpen(false);
+        setOpenUpdateModal(false);
+    };
     const [tech, setTech] = useState('');
     const [language, setLanguage] = useState('');
+    const [errorMsg, setErrorMsg] = useState('');
 
     const [formValues, setFormValues] = useState({
         fullName: '',
@@ -57,30 +69,43 @@ const AddDevModal = () => {
             ...formValues,
             [e.target.name]: value,
         });
+        console.log(formValues);
     };
 
     const handleSubmit = async (e) => {
         e.preventDefault();
 
-        try {
-            const res = await axios.post('/developers', formValues);
-            console.log(res.data.newDev);
-            setFormValues({
-                fullName: '',
-                email: '',
-                number: '',
-                location: '',
-                profilePic: '',
-                hourlyRate: '',
-                linkedin: '',
-                desc: '',
-                yearsOfExp: '',
-            });
-            formValues.technology = '';
-            formValues.nativeLanguage = '';
-        } catch (error) {
-            console.log(error);
+        if (!language.length || !tech.length)
+            setErrorMsg('Please choose your native language and Technology!');
+        else {
+            try {
+                const res = await axios.post('/developers', formValues);
+                console.log(res.data.newDev);
+                clearInputs();
+                setUpdated((prevValue) => !prevValue);
+                setErrorMsg('');
+                handleClose();
+            } catch (error) {
+                console.log(error);
+                setErrorMsg('');
+            }
         }
+    };
+    const clearInputs = () => {
+        setFormValues({
+            fullName: '',
+            email: '',
+            number: '',
+            location: '',
+            profilePic: '',
+            hourlyRate: '',
+            linkedin: '',
+            desc: '',
+            yearsOfExp: '',
+        });
+        formValues.technology = '';
+        formValues.nativeLanguage = '';
+        setEditDevData({});
     };
 
     return (
@@ -89,7 +114,7 @@ const AddDevModal = () => {
                 Add New Dev
             </Button>
             <Modal
-                open={open}
+                open={open || openUpdateModal}
                 onClose={handleClose}
                 aria-labelledby="modal-modal-title"
                 aria-describedby="modal-modal-description"
@@ -104,7 +129,9 @@ const AddDevModal = () => {
                                 label="Required"
                                 placeholder="Full Name"
                                 name="fullName"
-                                value={formValues.fullName}
+                                value={
+                                    formValues.fullName || editDevData.fullName
+                                }
                                 onChange={handleChange}
                             />
                         </div>
@@ -213,7 +240,15 @@ const AddDevModal = () => {
                         <Button variant="contained" type="submit">
                             Submit
                         </Button>
+                        {errorMsg && <p className="error-msg">{errorMsg}</p>}
                     </form>
+                    <Button
+                        variant="contained"
+                        id="clear-btn"
+                        onClick={clearInputs}
+                    >
+                        Clear Inputs
+                    </Button>
                 </Box>
             </Modal>
         </div>

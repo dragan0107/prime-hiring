@@ -1,4 +1,5 @@
 import React from 'react';
+import moment from 'moment';
 import './SingleDeveloper.css';
 import AlternateEmailIcon from '@mui/icons-material/AlternateEmail';
 import LocationOnIcon from '@mui/icons-material/LocationOn';
@@ -11,8 +12,48 @@ import WorkIcon from '@mui/icons-material/Work';
 import DeleteForeverIcon from '@mui/icons-material/DeleteForever';
 import ModeEditIcon from '@mui/icons-material/ModeEdit';
 import PaidIcon from '@mui/icons-material/Paid';
+import Checkbox from '@mui/material/Checkbox';
+import AccessTimeIcon from '@mui/icons-material/AccessTime';
+import { Button } from '@mui/material';
+import axios from 'axios';
 
-const SingleDeveloper = ({ devData }) => {
+const label = { inputProps: { 'aria-label': 'Checkbox demo' } };
+
+const SingleDeveloper = ({
+    devData,
+    setForHiring,
+    hired,
+    setUpdated,
+    setEditDevData,
+    setOpenUpdateModal,
+}) => {
+    const handleChange = () => {
+        setForHiring((prevValues) => {
+            const arr = [...prevValues];
+            const devIdx = arr.indexOf(devData._id);
+            if (devIdx >= 0) {
+                arr.splice(devIdx, 1);
+                return arr;
+            } else {
+                arr.push(devData._id);
+                return arr;
+            }
+        });
+    };
+
+    const fireDev = async () => {
+        try {
+            await axios.put(`/developers/${devData._id}/dismiss`);
+            setUpdated((prevValue) => !prevValue);
+        } catch (error) {
+            console.log(error);
+        }
+    };
+
+    const editDev = () => {
+        setEditDevData(devData);
+        setOpenUpdateModal(true);
+    };
     return (
         <div className="single-dev-wrapper">
             <section className="img-section">
@@ -68,17 +109,47 @@ const SingleDeveloper = ({ devData }) => {
                         <PaidIcon className="dev-icons" />
                         <span className="xp">{devData.hourlyRate}/hr</span>
                     </p>
+                    {hired && (
+                        <p className="hired-date">
+                            <AccessTimeIcon className="dev-icons" />
+                            <span className="xp">
+                                Hired from:{' '}
+                                {moment(devData.startDate).format(
+                                    'MMMM Do YYYY'
+                                )}{' '}
+                                until{' '}
+                                {moment(devData.endDate).format('MMMM Do YYYY')}
+                            </span>
+                        </p>
+                    )}
                 </div>
             </section>
             <div className="edit-delete">
                 <ModeEditIcon
                     className="dev-icons update-icons edit-icon"
                     sx={{ color: 'green' }}
+                    onClick={editDev}
                 />
                 <DeleteForeverIcon
                     className="dev-icons update-icons delete-icon"
                     sx={{ color: 'red' }}
                 />
+            </div>
+            <div className="checkbox-div">
+                {!hired ? (
+                    <>
+                        <Checkbox
+                            {...label}
+                            sx={{ '& .MuiSvgIcon-root': { fontSize: 28 } }}
+                            onChange={handleChange}
+                        />
+                        <span>Select for hiring</span>
+                    </>
+                ) : (
+                    <Button variant="contained" onClick={fireDev}>
+                        FIRE
+                    </Button>
+                )}
             </div>
         </div>
     );

@@ -10,5 +10,16 @@
 }
 
 .text-box-new-dev-form {
-    margin: 0.5em;
+    margin: 0.60em;
+}
+
+.error-msg {
+    font-family: 'Space Mono', monospace;
+    font-size: .8em;
+    font-weight: bold;
+    color: rgb(209, 65, 65);
+}
+
+#clear-btn {
+    margin-top: 10px;
 }
